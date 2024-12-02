@@ -1,0 +1,11 @@
+# IDEs
+.vscode
+.fleet
+.idea
+
+# Build
+build
+
+# Downloads (for testing)
+downloads
+dist/
