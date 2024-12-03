@@ -16,6 +16,7 @@ import (
 	"regexp"
 )
 
+const VERSION = "v1.0.2"
 const CHROME_VERSIONS_URL = "https://versionhistory.googleapis.com/v1/chrome/platforms/win64/channels/stable/versions"
 const MC_BEDROCK_DOWNLOAD_URL = "https://www.minecraft.net/en-us/download/server/bedrock"
 
@@ -27,7 +28,7 @@ var flagDirectory string
 
 func init() {
 	flag.BoolVar(&flagGrabChromeVersion, "chrome-version", false, "uses the latest chrome version from the API.")
-	flag.StringVar(&flagDirectory, "directory", "", "the directory containing the chrome versions.")
+	flag.StringVar(&flagDirectory, "directory", "", "the directory to download and extract the server to.")
 	flag.Parse()
 
 	if len(flagDirectory) != 0 {
@@ -37,7 +38,7 @@ func init() {
 
 func main() {
 
-	fmt.Println(tui.Format(tui.FgColorGrey, tui.FmtBold) + "[ " + tui.Format(tui.FgColorGold, tui.FmtBoldReset) + "Bedrock Server Downloader v1.0.1" + tui.Format(tui.FgColorGrey, tui.FmtBold) + " ]" + tui.FmtReset)
+	fmt.Println(tui.Format(tui.FgColorGrey, tui.FmtBold) + "[ " + tui.Format(tui.FgColorGold, tui.FmtBoldReset) + "Bedrock Server Downloader " + VERSION + tui.Format(tui.FgColorGrey, tui.FmtBold) + " ]" + tui.FmtReset)
 
 	cookieJar, err := cookiejar.New(nil)
 	if err != nil {

@@ -1,7 +1,7 @@
 egtyl.xyz/omnibill/archiver v1.0.0 h1:WeWp9beG3TUWFgxpK1LpgTFjdWPtxjjEcpIa1Cg1mP8=
 egtyl.xyz/omnibill/archiver v1.0.0/go.mod h1:yf3ID4IRpbITFns5nq7JFVvW5qo2YsLXbvfmJfAMZDI=
-egtyl.xyz/omnibill/tui v1.0.0 h1:KB04O9ce6U44b1fdbehRI9HBlS7A1/RZAxvqLJc/f28=
-egtyl.xyz/omnibill/tui v1.0.0/go.mod h1:yDE5HNY6YCk1i2o8RHE6O8+yVJLN8wZzXnxQkZioems=
+egtyl.xyz/omnibill/tui v1.0.1 h1:RVoJfe6nAk0eXChYflkIC33Mxe4IK1/gwzJnvh1c7iQ=
+egtyl.xyz/omnibill/tui v1.0.1/go.mod h1:0DDHXqdhG1UxOSR+c2NGcDL/SuPrkrVLu+0Fu4kSW+I=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dsnet/compress v0.0.1 h1:PlZu0n3Tuv04TzpfPbrnI0HW/YwodEXDS+oPKahKF0Q=
