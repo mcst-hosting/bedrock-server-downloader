@@ -16,7 +16,7 @@ import (
 	"regexp"
 )
 
-const VERSION = "v1.0.3"
+const VERSION = "v1.0.4"
 const CHROME_VERSIONS_URL = "https://versionhistory.googleapis.com/v1/chrome/platforms/win64/channels/stable/versions"
 const MC_BEDROCK_DOWNLOAD_URL = "https://www.minecraft.net/en-us/download/server/bedrock"
 
@@ -28,7 +28,6 @@ var flagDirectory string
 
 func init() {
 	flag.BoolVar(&flagGrabChromeVersion, "use-chrome-api", false, "uses the latest version of chrome from their API as the user agent.")
-	flag.BoolVar(&flagGrabChromeVersion, "chrome-version", false, "uses the latest version of chrome from their API as the user agent.")
 	flag.StringVar(&flagDirectory, "directory", "", "the directory to download and extract the server to.")
 	flag.Parse()
 
@@ -116,20 +115,10 @@ func main() {
 
 	fmt.Println(tui.Format(tui.FgColorGrey, tui.FmtBold) + "[ " + tui.Format(tui.FgColorGold, tui.FmtBoldReset) + "Extracting server archive" + tui.Format(tui.FgColorGrey, tui.FmtBold) + " ]" + tui.FmtReset)
 
-	archive, err := archiver.Open(archiver.Zip, archiveDest)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer archive.Close()
-
-	if err := archive.Extract(archiver.ExtractOptions{
-		Folder:    homeDir,
+	if err := archiver.Extract(archiveDest, archiver.ExtractOptions{
 		Overwrite: true,
+		Folder:    homeDir,
 	}); err != nil {
-		log.Fatalln(err)
-	}
-
-	if err := archive.Close(); err != nil {
 		log.Fatalln(err)
 	}
 
