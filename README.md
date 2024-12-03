@@ -11,5 +11,5 @@ bedrock-server-downloader
 If you want the program to automatically grab the latest Chrome version for its user agent:
 
 ```bash
-bedrock-server-downloader --chrome-version
+bedrock-server-downloader --use-chrome-api
 ```

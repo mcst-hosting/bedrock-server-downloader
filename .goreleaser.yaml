@@ -12,6 +12,10 @@ builds:
       - linux
       - windows
       - darwin
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
 
 archives:
   - format: tar.gz
