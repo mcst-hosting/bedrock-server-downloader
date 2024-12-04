@@ -33,7 +33,7 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set Release as Latest
+      - name: Set Release as Latest # Just in case if a release is made instead of just creating tag.
         uses: mcst-hosting/set-latest-release-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
