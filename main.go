@@ -16,7 +16,7 @@ import (
 	"regexp"
 )
 
-const VERSION = "v1.0.4"
+const VERSION = "v1.0.5"
 const CHROME_VERSIONS_URL = "https://versionhistory.googleapis.com/v1/chrome/platforms/win64/channels/stable/versions"
 const MC_BEDROCK_DOWNLOAD_URL = "https://www.minecraft.net/en-us/download/server/bedrock"
 
