@@ -33,3 +33,7 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set Release as Latest
+        uses: msct-hosting/set-latest-release-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
