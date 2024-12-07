@@ -21,6 +21,9 @@ type headerTransport struct {
 	T http.RoundTripper
 }
 
+var latestChromeVer string
+var latestChromeMajor string
+
 func (t *headerTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Set("accept", "*/*")
 	req.Header.Set("accept-language", "en-US,en;q=0.9")
@@ -42,19 +45,21 @@ func (t *headerTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.Header.Set("upgrade-insecure-requests", "1")
 
 	if flagGrabChromeVersion {
-		chromeVerResp, err := http.Get(CHROME_VERSIONS_URL)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		defer chromeVerResp.Body.Close()
+		if latestChromeVer != "" && latestChromeMajor != "" {
+			chromeVerResp, err := http.Get(CHROME_VERSIONS_URL)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			defer chromeVerResp.Body.Close()
 
-		var chromeVers chromeVerList
-		if err := json.NewDecoder(chromeVerResp.Body).Decode(&chromeVers); err != nil {
-			log.Fatalln(err)
-		}
+			var chromeVers chromeVerList
+			if err := json.NewDecoder(chromeVerResp.Body).Decode(&chromeVers); err != nil {
+				log.Fatalln(err)
+			}
 
-		latestChromeVer := chromeVers.Versions[0].Version
-		latestChromeMajor := strings.Split(latestChromeVer, ".")[0]
+			latestChromeVer = chromeVers.Versions[0].Version
+			latestChromeMajor = strings.Split(latestChromeVer, ".")[0]
+		}
 
 		req.Header.Set("sec-ch-ua-full-version", fmt.Sprintf(`"%s"`, latestChromeVer))
 		req.Header.Set("sec-ch-ua-full-version-list", fmt.Sprintf(`"Not/A)Brand";v="8.0.0.0", "Chromium";v="%s"`, latestChromeVer))
