@@ -2,9 +2,9 @@ package main
 
 import (
 	"bufio"
-	"egtyl.xyz/omnibill/archiver"
 	"egtyl.xyz/omnibill/tui"
 	"egtyl.xyz/omnibill/tui/progress"
+	"egtyl.xyz/shane/archiver"
 	"errors"
 	"flag"
 	"fmt"
@@ -132,18 +132,20 @@ func main() {
 
 	fmt.Println(tui.Format(tui.FgColorGrey, tui.FmtBold) + "[ " + tui.Format(tui.FgColorGold, tui.FmtBoldReset) + "Extracting server archive" + tui.Format(tui.FgColorGrey, tui.FmtBold) + " ]" + tui.FmtReset)
 
-	extractOptions := archiver.ExtractOptions{
-		Overwrite: true,
-		Folder:    homeDir,
-	}
-
 	if flagDoUpdate && currentVersion != gameVersion {
-		// TODO: Replace with ExtractFile in archiver package when available.
-		extractOptions.Filter = regexp.MustCompile(`bedrock_server\b`)
-	}
-
-	if err := archiver.Extract(archiveDest, extractOptions); err != nil {
-		log.Fatalln(err)
+		if err := archiver.ExtractFile(archiveDest, "bedrock_server", archiver.ExtractFileOptions{
+			Overwrite: true,
+			Folder:    homeDir,
+		}); err != nil {
+			log.Fatalln(err)
+		}
+	} else {
+		if err := archiver.Extract(archiveDest, archiver.ExtractOptions{
+			Overwrite: true,
+			Folder:    homeDir,
+		}); err != nil {
+			log.Fatalln(err)
+		}
 	}
 
 	if err := os.WriteFile(filepath.Join(homeDir, ".server_version"), []byte(gameVersion), 0600); err != nil {
