@@ -9,6 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"net/http/cookiejar"
@@ -133,11 +134,26 @@ func main() {
 	fmt.Println(tui.Format(tui.FgColorGrey, tui.FmtBold) + "[ " + tui.Format(tui.FgColorGold, tui.FmtBoldReset) + "Extracting server archive" + tui.Format(tui.FgColorGrey, tui.FmtBold) + " ]" + tui.FmtReset)
 
 	if flagDoUpdate && currentVersion != gameVersion {
-		if err := archiver.ExtractFile(archiveDest, "bedrock_server", archiver.ExtractFileOptions{
-			Overwrite: true,
-			Folder:    homeDir,
-		}); err != nil {
-			log.Fatalln(err)
+		if len(currentVersion) == 0 {
+			if _, err := os.Stat(filepath.Join(homeDir, "bedrock_server")); err != nil {
+				if errors.Is(err, fs.ErrNotExist) {
+					if err := archiver.Extract(archiveDest, archiver.ExtractOptions{
+						Overwrite: true,
+						Folder:    homeDir,
+					}); err != nil {
+						log.Fatalln(err)
+					}
+				} else {
+					log.Fatalln(err)
+				}
+			}
+		} else {
+			if err := archiver.ExtractFile(archiveDest, "bedrock_server", archiver.ExtractFileOptions{
+				Overwrite: true,
+				Folder:    homeDir,
+			}); err != nil {
+				log.Fatalln(err)
+			}
 		}
 	} else {
 		if err := archiver.Extract(archiveDest, archiver.ExtractOptions{

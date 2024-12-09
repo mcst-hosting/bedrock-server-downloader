@@ -11,6 +11,7 @@ require (
 
 require (
 	github.com/go-git/go-billy/v5 v5.6.0 // indirect
+	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/ulikunitz/xz v0.5.12 // indirect
 	golang.org/x/sys v0.28.0 // indirect
 	golang.org/x/term v0.27.0 // indirect
