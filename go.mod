@@ -5,7 +5,7 @@ go 1.23.2
 toolchain go1.23.3
 
 require (
-	egtyl.xyz/omnibill/tui v1.0.1
+	egtyl.xyz/omnibill/tui v1.0.2
 	egtyl.xyz/shane/archiver v0.1.3
 )
 
