@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"egtyl.xyz/omnibill/tui"
 	"egtyl.xyz/omnibill/tui/progress"
 	"egtyl.xyz/shane/archiver"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -18,9 +18,9 @@ import (
 	"regexp"
 )
 
-const VERSION = "v1.0.5"
+const VERSION = "v1.0.6"
 const CHROME_VERSIONS_URL = "https://versionhistory.googleapis.com/v1/chrome/platforms/win64/channels/stable/versions"
-const MC_BEDROCK_DOWNLOAD_URL = "https://www.minecraft.net/en-us/download/server/bedrock"
+const MC_BEDROCK_DOWNLOAD_URL = "https://net-secondary.web.minecraft-services.net/api/v1.0/download/links"
 
 var mcLinkRegex = regexp.MustCompile(`https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-(.*).zip`)
 var homeDir = os.Getenv("HOME")
@@ -76,20 +76,25 @@ func main() {
 	}
 	defer mcVerResp.Body.Close()
 
-	var mcVerInfo []string
+	var linkInfo linksResponse
+	if err := json.NewDecoder(mcVerResp.Body).Decode(&linkInfo); err != nil {
+		log.Fatalln(err)
+	}
 
-	scanner := bufio.NewScanner(mcVerResp.Body)
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		if len(mcLinkRegex.FindStringSubmatch(line)) > 0 {
-
-			mcVerInfo = mcLinkRegex.FindStringSubmatch(line)
+	var downloadInfo linkDownload
+	for _, link := range linkInfo.Result.Links {
+		if link.DownloadType == "serverBedrockLinux" {
+			downloadInfo = link
 			break
 		}
 	}
 
-	gameVersion := mcVerInfo[1]
+	var mcVerRegexMatch []string
+	if len(mcLinkRegex.FindStringSubmatch(downloadInfo.DownloadURL)) > 0 {
+		mcVerRegexMatch = mcLinkRegex.FindStringSubmatch(downloadInfo.DownloadURL)
+	}
+
+	gameVersion := mcVerRegexMatch[1]
 	archiveDest := filepath.Join(homeDir, "bedrock_server_"+gameVersion+".zip")
 
 	if flagDoUpdate && currentVersion == gameVersion {
@@ -105,7 +110,7 @@ func main() {
 	}
 	defer file.Close()
 
-	downloadReq, err := http.NewRequest("GET", mcVerInfo[0], nil)
+	downloadReq, err := http.NewRequest("GET", mcVerRegexMatch[0], nil)
 	if err != nil {
 		log.Fatalln(err)
 	}

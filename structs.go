@@ -8,6 +8,17 @@ import (
 	"strings"
 )
 
+type linksResponse struct {
+	Result struct {
+		Links []linkDownload `json:"links"`
+	} `json:"result"`
+}
+
+type linkDownload struct {
+	DownloadType string `json:"downloadType"`
+	DownloadURL  string `json:"downloadUrl"`
+}
+
 type chromeVerList struct {
 	Versions []chromeVer `json:"versions"`
 }
